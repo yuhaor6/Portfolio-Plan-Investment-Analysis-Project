@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install dependencies",
+            "type": "shell",
+            "command": "python -m pip install -r requirements.txt",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run data pull",
+            "type": "shell",
+            "command": "python -m data.pull_returns",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run portfolio stats",
+            "type": "shell",
+            "command": "python -m models.portfolio_stats",
+            "problemMatcher": []
+        }
+    ]
+}

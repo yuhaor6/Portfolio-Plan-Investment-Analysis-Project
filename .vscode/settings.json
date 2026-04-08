@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        80
+    ],
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/.venv": true
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.packageIndexDepths": {
+        "numpy": 1
+    },
+    "python.defaultInterpreterPath": ".venv/Scripts/python.exe"
+}
