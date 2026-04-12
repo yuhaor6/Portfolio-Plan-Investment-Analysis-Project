@@ -1,0 +1,1288 @@
+% ============================================================
+%  10-Year Savings & Investment Plan — Final Report
+%  70-492 Investments | Tepper School of Business, CMU
+%  Compile with: pdflatex → bibtex → pdflatex → pdflatex
+%  Figures: upload contents of plots/figures/ into Overleaf
+%           under a sub-folder named  figures/
+% ============================================================
+
+\documentclass[12pt, letterpaper]{article}
+
+% ── Encoding & fonts ─────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Page geometry ────────────────────────────────────────────
+\usepackage[
+  top=1in, bottom=1in,
+  left=1.25in, right=1.25in,
+  headheight=14pt
+]{geometry}
+
+% ── Mathematics ──────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+
+% ── Tables ───────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+
+% ── Figures ──────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\graphicspath{{figures/}}   % Upload plot PNGs into Overleaf folder "figures/"
+
+% ── Colors ───────────────────────────────────────────────────
+\usepackage[dvipsnames]{xcolor}
+\definecolor{cmuRed}{RGB}{196, 18, 48}
+\definecolor{darkblue}{RGB}{0, 53, 128}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+
+% ── Headers & footers ────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gray}{70-492 Investments $\cdot$ Tepper School of Business}}
+\fancyhead[R]{\small\textcolor{gray}{Savings \& Investment Plan}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Section styling ──────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\section}
+  {\large\bfseries\color{darkblue}}
+  {\thesection.}{0.6em}{}[\vspace{-4pt}\rule{\linewidth}{0.6pt}\vspace{4pt}]
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{darkblue!80}}
+  {\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalsize\itshape\color{black}}
+  {\thesubsubsection.}{0.5em}{}
+
+% ── Spacing ──────────────────────────────────────────────────
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% ── Hyperlinks ───────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=darkblue,
+  citecolor=cmuRed,
+  urlcolor=darkblue
+]{hyperref}
+
+% ── Bibliography ─────────────────────────────────────────────
+\usepackage[authoryear, round]{natbib}
+\bibliographystyle{plainnat}
+
+% ── Convenience commands ─────────────────────────────────────
+\newcommand{\dollar}[1]{\$#1}
+\newcommand{\pct}[1]{#1\%}
+\newcommand{\T}{\mathbf{T}}          % tangency portfolio
+\newcommand{\w}{\mathbf{w}}          % weight vector
+\newcommand{\muv}{\boldsymbol{\mu}}  % mean vector
+\newcommand{\Sig}{\boldsymbol{\Sigma}} % covariance matrix
+\newcommand{\rf}{r_f}                % risk-free rate
+
+% ── Coloured info box ─────────────────────────────────────────
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\newtcolorbox{keybox}[1][]{
+  colback=darkblue!5, colframe=darkblue,
+  fonttitle=\bfseries, title=#1,
+  boxrule=0.6pt, arc=3pt
+}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ── Title page ───────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{0.8cm}
+
+  {\color{cmuRed}\rule{\linewidth}{2pt}}
+  \vspace{0.5cm}
+
+  {\LARGE\bfseries A Ten-Year Savings and Investment Plan\\[6pt]
+   for a New College Graduate}
+
+  \vspace{0.4cm}
+  {\color{cmuRed}\rule{\linewidth}{0.8pt}}
+
+  \vspace{1.2cm}
+
+  {\large 70-492 Investments}\\[4pt]
+  {\normalsize Burton Hollifield}\\[4pt]
+  {\normalsize Tepper School of Business, Carnegie Mellon University}
+
+  \vspace{1.4cm}
+
+  \begin{tabular}{ll}
+    \textbf{Prepared for:} & New College Graduate Client \\[4pt]
+    \textbf{Prepared by:}  & Yuhao Ren \& Mia Lei \\[4pt]
+    \textbf{Date:}         & April 2026 \\[4pt]
+    \textbf{Horizon:}      & 10 Years (May 2026 -- May 2036) \\[4pt]
+    \textbf{Goal:}         & \$150{,}000 (real, 2026 dollars) \\[4pt]
+    \textbf{Recommended Allocation:} & 60\% IVV $\cdot$ 13\% USMV $\cdot$ 27\% SHV \\
+  \end{tabular}
+
+  \vspace{1.8cm}
+
+  \begin{keybox}[Investment Recommendation at a Glance]
+    \centering
+    \begin{tabular}{lrr}
+      \toprule
+      \textbf{Asset} & \textbf{Weight} & \textbf{Role} \\
+      \midrule
+      IVV (iShares S\&P 500 ETF)      & 60.4\% & Equity risk premium \\
+      USMV (iShares Min-Vol ETF)      & 12.6\% & Low-volatility factor tilt \\
+      SHV (iShares Short Treasury)    & 27.0\% & Risk-free / emergency buffer \\
+      \midrule
+      Portfolio Sharpe Ratio          & 0.87   & \\
+      Goal Attainment Probability     & 61.6\% & \\
+      Median Terminal Wealth (real)   & \$157{,}068 & \\
+      5th-Percentile Floor (real)     & \$122{,}760 & \\
+      \bottomrule
+    \end{tabular}
+  \end{keybox}
+
+  \vspace{1.0cm}
+  \footnotesize
+  \textit{All wealth figures are expressed in 2026 real dollars, deflated at 2.5\% per annum.
+  Historical returns cover January 2005 -- December 2025 (251 months, Yahoo Finance).
+  Simulation uses 5{,}000 block-bootstrap paths with 12-month blocks.}
+
+  \vfill
+  {\color{cmuRed}\rule{\linewidth}{2pt}}
+\end{titlepage}
+
+% ── Front matter ─────────────────────────────────────────────
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% Abstract
+\begin{abstract}
+\noindent
+This report presents a complete, quantitatively-grounded savings and investment plan
+for a 22-year-old college graduate entering the workforce in May 2026.
+The client earns \$65{,}000 gross in the first year, carries \$30{,}000 in federal
+student loans, and seeks to accumulate \$150{,}000 in real (2026) dollars
+within ten years for a residential property down payment.
+
+After projecting year-by-year net savings capacity (\$6{,}093 rising to \$16{,}914),
+we construct a five-asset universe of exchange-traded funds (IVV, AGG, SHV, QUAL, USMV)
+and apply mean-variance optimization under no-short-sales constraints to identify the
+tangency portfolio.  Positioning the client on the Capital Allocation Line to match
+a 20\% maximum drawdown tolerance yields a final allocation of
+\textbf{60\% IVV / 13\% USMV / 27\% SHV}.  A 5{,}000-path block-bootstrap simulation
+finds a goal-attainment probability of \textbf{61.6\%}, a median terminal real wealth
+of \textbf{\$157{,}068}, and a 5th-percentile floor of \textbf{\$122{,}760}---roughly
+\$32{,}000 above the all-equity alternative at nearly identical expected upside.
+Stress tests, Fama-French five-factor regressions, and estimation-window sensitivity
+checks corroborate the recommendation's robustness.
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+\listoffigures
+\listoftables
+\newpage
+
+% Main body
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+% ============================================================
+
+Personal financial planning sits at the intersection of household economics and
+asset-pricing theory.  For a new college graduate, the challenge is particularly
+acute: income is modest and uncertain, liabilities (student debt) are front-loaded,
+and the investment horizon is long enough to warrant meaningful equity exposure yet
+short enough that a severe bear market near the goal date poses real danger.
+
+This report develops a coherent, end-to-end plan that answers four
+practitioner-relevant questions:
+\begin{enumerate}
+  \item \textbf{How much should the client save each year?} \\
+        We project deterministic net savings from income, taxes, living expenses,
+        and loan amortization over ten years.
+  \item \textbf{In which securities should the savings be invested?} \\
+        We apply mean-variance theory \citep{markowitz1952} to a universe of
+        five low-cost ETFs, identifying the tangency portfolio with and without
+        factor-tilted funds.
+  \item \textbf{How much risk is appropriate?} \\
+        We use the Capital Allocation Line \citep{tobin1958} to translate the
+        client's stated maximum-drawdown tolerance into a precise split between
+        risky and risk-free assets.
+  \item \textbf{Will the client reach the goal, and what can go wrong?} \\
+        A block-bootstrap Monte Carlo simulation quantifies the goal-attainment
+        probability and a battery of stress tests identifies the most damaging
+        adverse scenarios.
+\end{enumerate}
+
+Section~\ref{sec:client} establishes the client profile and assumptions.
+Section~\ref{sec:savings} presents the savings schedule.
+Section~\ref{sec:universe} characterizes the investment universe.
+Section~\ref{sec:optimization} derives the optimal portfolio.
+Section~\ref{sec:simulation} presents simulation results and strategy comparisons.
+Section~\ref{sec:risk} covers risk analysis and stress testing.
+Section~\ref{sec:factors} interprets the portfolio through a factor lens.
+Section~\ref{sec:sensitivity} assesses robustness to estimation-window choice.
+Section~\ref{sec:conclusion} synthesizes the recommendation.
+
+% ============================================================
+\section{Client Profile and Assumptions}
+\label{sec:client}
+% ============================================================
+
+\subsection{Demographics and Financial Situation}
+
+The client is a 22-year-old college graduate commencing full-time employment
+in May 2026 in an urban U.S. metro area.  Table~\ref{tab:client} summarizes
+the baseline assumptions.
+
+\begin{table}[H]
+  \centering
+  \caption{Client baseline assumptions}
+  \label{tab:client}
+  \begin{tabularx}{\linewidth}{lXl}
+    \toprule
+    \textbf{Attribute} & \textbf{Value} & \textbf{Source / Rationale} \\
+    \midrule
+    Age at plan start      & 22 years & Graduating cohort \\
+    Starting gross salary  & \$65{,}000 & BLS median, B.S.\ economics / business \\
+    Salary growth (Yr 1--4) & 5.0\%/yr nominal & Early-career wage-growth literature \\
+    Salary growth (Yr 5--10) & 3.0\%/yr nominal & Post-ramp-up slowdown \\
+    Effective tax rate     & 20\% on gross & 2026 bracket + standard deduction \\
+    Monthly living expenses & \$3{,}500 (Yr 1) & Urban, rent-heavy cost of living \\
+    Expense growth         & 2.5\%/yr & Matches baseline CPI assumption \\
+    Student loan balance   & \$30{,}000 at 5.5\% & Average federal direct loan \\
+    Loan repayment term    & 10 years (standard) & Fixed monthly payment: \$390.69 \\
+    Baseline inflation     & 2.5\%/yr & Long-run Federal Reserve target \\
+    Emergency fund target  & 6 months expenses & Financial-planning convention \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Investment Goal}
+
+The client seeks to accumulate \textbf{\$150{,}000 in real (2026) dollars}
+by May 2036 for a residential property down payment.
+Expressing the goal in real terms is essential: a nominal target fails to account
+for the erosion of purchasing power over a decade of inflation.
+At 2.5\% annual inflation, \$150{,}000 real in 2036 corresponds to
+approximately \$192{,}000 nominal.
+
+\subsection{Risk Tolerance}
+
+The client's stated risk tolerance is a willingness to absorb a
+\textbf{maximum portfolio drawdown of 20\%} without abandoning the investment plan.
+This single, concrete preference is sufficient to determine the client's
+position along the Capital Allocation Line (Section~\ref{sec:cal}).
+
+% ============================================================
+\section{Savings Capacity and Cash Flow Analysis}
+\label{sec:savings}
+% ============================================================
+
+\subsection{Net Savings Projection}
+
+Annual investable savings are computed as:
+\begin{equation}
+  S_t = \text{Salary}_t\,(1 - \tau) - E_t - L
+  \label{eq:savings}
+\end{equation}
+where $\tau = 0.20$ is the effective tax rate, $E_t$ denotes annual living
+expenses (growing at inflation), and $L = \$4{,}688$ is the fixed annual loan
+payment under the standard 10-year amortization schedule.
+
+\begin{table}[H]
+  \centering
+  \caption{Year-by-year savings schedule (nominal dollars)}
+  \label{tab:savings}
+  \small
+  \begin{tabular}{crrrrr r}
+    \toprule
+    \textbf{Year} & \textbf{Salary} & \textbf{Taxes} & \textbf{Expenses}
+                  & \textbf{Loan} & \textbf{Savings} & \textbf{Cumulative} \\
+    \midrule
+    1 (2026) & \$65{,}000 & \$13{,}000 & \$42{,}000 & \$4{,}688 & \$\mathbf{6{,}093}  & \$6{,}093   \\
+    2 (2027) & \$68{,}250 & \$13{,}650 & \$43{,}050 & \$4{,}688 & \$\mathbf{7{,}643}  & \$13{,}736  \\
+    3 (2028) & \$71{,}663 & \$14{,}333 & \$44{,}126 & \$4{,}688 & \$\mathbf{9{,}297}  & \$23{,}033  \\
+    4 (2029) & \$75{,}246 & \$15{,}049 & \$45{,}229 & \$4{,}688 & \$\mathbf{11{,}060} & \$34{,}093  \\
+    5 (2030) & \$79{,}008 & \$15{,}802 & \$46{,}360 & \$4{,}688 & \$\mathbf{12{,}939} & \$47{,}032  \\
+    6 (2031) & \$81{,}378 & \$16{,}276 & \$47{,}519 & \$4{,}688 & \$\mathbf{13{,}676} & \$60{,}709  \\
+    7 (2032) & \$83{,}819 & \$16{,}764 & \$48{,}707 & \$4{,}688 & \$\mathbf{14{,}442} & \$75{,}150  \\
+    8 (2033) & \$86{,}334 & \$17{,}267 & \$49{,}925 & \$4{,}688 & \$\mathbf{15{,}236} & \$90{,}386  \\
+    9 (2034) & \$88{,}924 & \$17{,}785 & \$51{,}173 & \$4{,}688 & \$\mathbf{16{,}059} & \$106{,}445 \\
+    10 (2035)& \$91{,}592 & \$18{,}318 & \$52{,}452 & \$4{,}688 & \$\mathbf{16{,}914} & \$123{,}359 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{The Investment Imperative}
+
+Total undiscounted contributions over ten years amount to \$123{,}359---
+\$26{,}641 short of the \$150{,}000 real goal.  After adjusting for inflation,
+the pure-savings path falls even further short.
+\textbf{Investing is not optional; it is a necessary condition for goal attainment.}
+
+Savings capacity is back-loaded: Year 1 contributions (\$6{,}093) are less than
+40\% of Year 10 contributions (\$16{,}914), reflecting rising salary against
+fixed loan payments and relatively stable inflation-adjusted expenses.
+This back-loading has an important implication for risk allocation---the portfolio
+is small early on (so large drawdowns are manageable in absolute terms) but
+accumulates quickly in the final years (so risk-reduction near the goal date
+becomes valuable).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.80\linewidth]{savings_trajectory.png}
+  \caption{Deterministic savings trajectory: annual contributions (bars) and
+    cumulative savings (orange line) relative to the \$150{,}000 real goal (red dashed).
+    Without investment returns the client falls approximately \$27{,}000 short.}
+  \label{fig:savings}
+\end{figure}
+
+% ============================================================
+\section{Investment Universe and Historical Analysis}
+\label{sec:universe}
+% ============================================================
+
+\subsection{Asset Universe}
+
+We employ a two-layer asset universe of exchange-traded funds, all with
+low expense ratios and sufficient liquidity for a retail investor.
+
+\paragraph{Layer A --- Core Three Assets.}
+\begin{table}[H]
+  \centering
+  \caption{Layer A asset universe (IVV, AGG, SHV)}
+  \label{tab:layer_a}
+  \begin{tabularx}{\linewidth}{llX}
+    \toprule
+    \textbf{Ticker} & \textbf{Name} & \textbf{Role} \\
+    \midrule
+    IVV & iShares Core S\&P 500 ETF        & Equity market; captures the U.S.\ equity risk premium \\
+    AGG & iShares Core U.S.\ Aggregate Bond ETF & Investment-grade bond diversifier \\
+    SHV & iShares Short Treasury ETF       & Risk-free / cash proxy; emergency fund vehicle \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\paragraph{Layer B --- Adds Two Factor ETFs.}
+\begin{table}[H]
+  \centering
+  \caption{Layer B asset universe (adds QUAL and USMV)}
+  \label{tab:layer_b}
+  \begin{tabularx}{\linewidth}{llXl}
+    \toprule
+    \textbf{Ticker} & \textbf{Name} & \textbf{Role} & \textbf{Inception} \\
+    \midrule
+    QUAL & iShares MSCI USA Quality Factor ETF  & Profitability tilt  & July 2013 \\
+    USMV & iShares MSCI USA Min Vol Factor ETF  & Low-volatility tilt & Oct.\ 2011 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The quality and minimum-volatility factors are well-documented in the asset-pricing
+literature \citep{novy2013,baker2011}.  USMV specifically is motivated by
+\citet{ang2016}, who documents that low-beta stocks have historically earned
+higher risk-adjusted returns than the CAPM predicts.
+
+\subsection{Historical Return Statistics}
+
+Monthly total returns span January 2005 through December 2025 (251 months) for
+the Layer A universe, and the QUAL/USMV overlap period (January 2013 -- December 2025,
+145 months) for Layer B analysis.  Statistics are annualized as
+$\hat{\mu}_{\text{ann}} = 12\,\hat{\mu}_m$ and $\hat{\sigma}_{\text{ann}} = \sqrt{12}\,\hat{\sigma}_m$.
+
+\begin{table}[H]
+  \centering
+  \caption{Annualized historical return statistics (full sample)}
+  \label{tab:stats}
+  \begin{tabular}{lrrrr}
+    \toprule
+    \textbf{Asset} & \textbf{Ann.\ Return} & \textbf{Ann.\ Vol}
+                   & \textbf{Sharpe (vs SHV)} & \textbf{Max Ann.\ Drawdown} \\
+    \midrule
+    IVV  & 13.6\% & 15.2\% & 0.80 & $-51\%$ (2008--09) \\
+    AGG  &  3.0\% &  3.8\% & 0.81 & $-14\%$ (2022) \\
+    SHV  &  1.5\% &  0.3\% & ---  & $\approx 0\%$ \\
+    QUAL & 13.2\% & 14.7\% & 0.79 & $-38\%$ (2020) \\
+    USMV & 11.1\% & 11.1\% & \textbf{0.86} & $-30\%$ (2020) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+USMV achieves the highest individual Sharpe ratio (0.86) at roughly 27\% lower
+volatility than IVV, consistent with the low-volatility anomaly.  QUAL's return
+and Sharpe ratio are nearly identical to IVV's, which anticipates the high
+cross-asset correlation documented below.
+
+\subsection{Correlation Structure}
+
+\begin{table}[H]
+  \centering
+  \caption{Pairwise return correlations --- Layer A (2005--2025)}
+  \label{tab:corr_a}
+  \begin{tabular}{lrrr}
+    \toprule
+           & IVV  & AGG  & SHV  \\
+    \midrule
+    IVV    & 1.00 & 0.02 & $-0.01$ \\
+    AGG    & 0.02 & 1.00 &  0.24   \\
+    SHV    &$-0.01$& 0.24 &  1.00  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Selected pairwise return correlations --- Layer B (2013--2025)}
+  \label{tab:corr_b}
+  \begin{tabular}{lrrr}
+    \toprule
+           & IVV  & QUAL & USMV \\
+    \midrule
+    IVV    & 1.00 & 0.98 & 0.88 \\
+    QUAL   & 0.98 & 1.00 & 0.88 \\
+    USMV   & 0.88 & 0.88 & 1.00 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The near-zero IVV--AGG correlation ($\rho = 0.02$) in Table~\ref{tab:corr_a} confirms
+the classical equity-bond diversification benefit.
+Conversely, QUAL's $\rho = 0.98$ with IVV (Table~\ref{tab:corr_b}) makes it a near-redundant
+asset; the optimizer will not find an allocation that benefits from including it alongside IVV.
+USMV's more modest $\rho = 0.88$ provides meaningful diversification within the equity sleeve.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{correlation_heatmap_Layer_A_IVV-AGG-SHV.png}
+    \caption{Layer A correlation heatmap}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{correlation_heatmap_Layer_B_+QUAL-USMV.png}
+    \caption{Layer B correlation heatmap}
+  \end{subfigure}
+  \caption{Monthly return correlations across the two asset universes.
+    IVV--QUAL correlation of 0.98 renders QUAL redundant in portfolio construction.}
+  \label{fig:corr}
+\end{figure}
+
+% ============================================================
+\section{Portfolio Construction: Mean-Variance Optimization}
+\label{sec:optimization}
+% ============================================================
+
+\subsection{Theoretical Framework}
+
+Following \citet{markowitz1952}, the tangency portfolio $\T$ solves:
+
+\begin{equation}
+  \max_{\w}\; \frac{\w^\top\muv - \rf}{\sqrt{\w^\top \Sig\, \w}}
+  \qquad \text{s.t.} \quad
+  \mathbf{1}^\top\w = 1,\quad w_i \geq 0\;\forall\, i
+  \label{eq:tangency}
+\end{equation}
+
+Problem~\eqref{eq:tangency} is solved numerically using sequential
+least-squares programming (SLSQP) with 20 random Dirichlet restarts to
+mitigate local-optima sensitivity.
+
+\subsection{Efficient Frontier and Tangency Portfolios}
+
+\begin{table}[H]
+  \centering
+  \caption{Tangency portfolio weights, return, volatility, and Sharpe ratio}
+  \label{tab:tangency}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    \textbf{Universe} & \textbf{IVV} & \textbf{AGG} & \textbf{SHV}
+                      & \textbf{QUAL} & \textbf{USMV}
+                      & \textbf{Sharpe} \\
+    \midrule
+    Layer A (IVV/AGG/SHV) & 44\%  & 56\%  & 0\%  & ---  & ---  & 0.70 \\
+    Layer B (all five)    & 82.7\%&  0\%  & 0\%  & 0\%  & 17.3\%& \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three features of Table~\ref{tab:tangency} deserve discussion.
+
+\textit{First}, within Layer A, bonds take a substantial weight (56\%) alongside equities.
+The near-zero IVV--AGG correlation makes this efficient: bonds contribute little
+variance while maintaining expected return.
+
+\textit{Second}, expanding the universe to Layer B causes the optimizer to discard
+bonds entirely and replace them with USMV.  USMV offers equity-like expected returns
+with meaningfully lower volatility and a correlation of 0.88 with IVV---sufficient
+to improve the portfolio's Sharpe ratio while maintaining a high expected return that
+bonds cannot match in this sample.  QUAL earns zero weight because, at $\rho = 0.98$
+with IVV, it adds no useful diversification.
+
+\textit{Third}, the Sharpe ratio improvement from 0.70 (Layer A) to 0.87 (Layer B)
+represents a \textbf{24\% gain in risk-adjusted return} from expanding the opportunity
+set to include factor ETFs.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{efficient_frontier_Layer_A_IVV-AGG-SHV.png}
+    \caption{Layer A efficient frontier}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{efficient_frontier_Layer_B_+QUAL-USMV.png}
+    \caption{Layer B efficient frontier}
+  \end{subfigure}
+  \caption{Mean-variance efficient frontiers (no short sales).
+    The starred point denotes the tangency portfolio; the dashed line is the Capital
+    Allocation Line (CAL) from the risk-free rate through the tangency portfolio.}
+  \label{fig:frontier}
+\end{figure}
+
+\subsection{Capital Allocation Line: Calibrating Risk to the Client}
+\label{sec:cal}
+
+The tangency portfolio is 100\% invested in risky assets.  The client's 20\% drawdown
+tolerance implies a \textit{portfolio volatility target} of approximately 10\%---
+applying the approximation that maximum drawdown $\approx 2\,\sigma$ for
+log-normally distributed returns \citep{magdon2004}.
+
+Under the CAL, the optimal fraction $w^*$ allocated to the tangency portfolio is:
+
+\begin{equation}
+  w^* = \frac{\sigma^*}{\sigma_T} = \frac{10\%}{13.7\%} = 73.0\%
+  \label{eq:cal}
+\end{equation}
+
+The remaining 27\% is allocated to the risk-free asset (SHV), yielding:
+
+\begin{table}[H]
+  \centering
+  \caption{Final recommended portfolio allocation}
+  \label{tab:final}
+  \begin{tabular}{llrr}
+    \toprule
+    \textbf{Asset} & \textbf{Role} & \textbf{Weight} & \textbf{Ann.\ Contribution to Portfolio} \\
+    \midrule
+    IVV  & Equity market core   & \textbf{60.4\%} & $0.604 \times 13.6\%\;=\;8.2\%$ return \\
+    USMV & Low-vol factor tilt  & \textbf{12.6\%} & $0.126 \times 11.1\%\;=\;1.4\%$ return \\
+    SHV  & Risk-free / emergency buffer & \textbf{27.0\%} & $0.270 \times\phantom{0}1.5\%\;=\;0.4\%$ return \\
+    \midrule
+    \multicolumn{2}{l}{\textbf{Portfolio Expected Return}} & \multicolumn{2}{r}{$\approx10.0\%$/yr} \\
+    \multicolumn{2}{l}{\textbf{Portfolio Volatility}}      & \multicolumn{2}{r}{$\approx10.0\%$/yr} \\
+    \multicolumn{2}{l}{\textbf{Portfolio Sharpe Ratio}}    & \multicolumn{2}{r}{$0.87$} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The 27\% SHV position serves a dual function.  It is simultaneously (1) the risk-free
+component of the optimal CAL allocation and (2) the vehicle for the client's required
+six-month emergency fund (approximately \$21{,}000 in Year 1).  No separate cash
+account is needed, eliminating the traditional drag of idle liquidity.
+
+\paragraph{Rebalancing policy.}
+The portfolio is rebalanced to target weights \textit{annually} at year-end,
+after new contributions are added.  Annual rebalancing is sufficient to maintain
+the target risk profile while keeping transaction costs negligible.
+
+% ============================================================
+\section{Simulation Methodology and Goal Attainment}
+\label{sec:simulation}
+% ============================================================
+
+\subsection{Block-Bootstrap Monte Carlo}
+
+We simulate 5{,}000 independent ten-year wealth paths using a
+\textit{block-bootstrap} methodology \citep{politis1994}.
+The procedure draws contiguous 12-month blocks of historical monthly returns
+(with replacement), preserving:
+\begin{itemize}
+  \item Within-year autocorrelation and seasonality in asset returns;
+  \item Cross-sectional dependence between assets, including during crises;
+  \item Empirical fat tails and skewness (no normality assumption).
+\end{itemize}
+
+Each path evolves as follows for each year $t = 1, \ldots, 10$:
+\begin{enumerate}
+  \item \textbf{Contribute:} Add $S_t$ from Table~\ref{tab:savings} at the start of the year.
+  \item \textbf{Compound:} Apply 12 sequential monthly returns, drawn from the bootstrap block.
+  \item \textbf{Rebalance:} Realign to target weights.  Terminal year-end value $V_t$ is recorded.
+\end{enumerate}
+
+Real terminal wealth is computed as $V_{10} / (1 + \pi)^{10}$, where $\pi = 2.5\%$.
+
+\subsection{Terminal Wealth Distribution: Recommended Strategy}
+
+\begin{table}[H]
+  \centering
+  \caption{Terminal real wealth distribution --- Recommended allocation
+           (60\% IVV / 13\% USMV / 27\% SHV), 5{,}000 paths}
+  \label{tab:sim_results}
+  \begin{tabular}{lr}
+    \toprule
+    \textbf{Statistic} & \textbf{Value} \\
+    \midrule
+    Mean                        & \$158{,}748 \\
+    \textbf{Median}             & \$\mathbf{157{,}068} \\
+    5th percentile (bad outcome)& \$122{,}760 \\
+    25th percentile             & \$141{,}332 \\
+    75th percentile             & \$174{,}108 \\
+    95th percentile (good outcome) & \$201{,}176 \\
+    \midrule
+    \textbf{P(Wealth $\geq$ \$150{,}000 real)} & \textbf{61.6\%} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The median outcome (\$157{,}068) already exceeds the goal.  The 5th-percentile floor
+(\$122{,}760) represents an adverse outcome---a shortfall of approximately \$27{,}000
+in real terms---but it is not catastrophic.  The client retains a substantial
+capital base from which to adjust the plan or extend the timeline.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{wealth_fan_chart_Layer_B_QUAL-USMV.png}
+  \caption{Fan chart of 5{,}000 simulated real-wealth paths for the recommended strategy.
+    The bold line is the median path; shaded bands show the 25th--75th and
+    5th--95th percentile ranges.  The red dashed line marks the \$150{,}000 goal.}
+  \label{fig:fan}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\linewidth]{terminal_hist_Layer_B_QUAL-USMV.png}
+  \caption{Histogram of terminal real wealth across 5{,}000 simulation paths.
+    The red vertical line marks the \$150{,}000 goal.
+    The shaded region to the left represents the 38.4\% of paths that fall short.}
+  \label{fig:hist}
+\end{figure}
+
+\subsection{Strategy Comparison}
+\label{sec:comparison}
+
+Five strategies are compared under identical simulation conditions
+(same 5{,}000 bootstrap paths, same savings schedule):
+
+\begin{table}[H]
+  \centering
+  \caption{Strategy comparison --- terminal real wealth and goal attainment}
+  \label{tab:comparison}
+  \begin{tabular}{lrrrr}
+    \toprule
+    \textbf{Strategy} & \textbf{Median (\$)} & \textbf{5th Pct (\$)}
+                      & \textbf{P(Goal) \%} & \textbf{Sharpe} \\
+    \midrule
+    1.\ All Cash (SHV)              & 102{,}523 & 98{,}184  &  0.0\% & 0.00 \\
+    2.\ All Equity (IVV)            & 168{,}672 & 91{,}085  & 64.3\% & 0.64 \\
+    3.\ 60/40 IVV/AGG               & 143{,}962 & 98{,}790  & 40.3\% & 0.67 \\
+    4.\ Tangency A (IVV/AGG/SHV)    & 134{,}804 & 100{,}942 & 20.3\% & 0.68 \\
+    \textbf{5.\ Recommended (Tangency B)} & \textbf{157{,}068} & \textbf{122{,}760} & \textbf{61.6\%} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{All-cash (Strategy 1)} is uniformly dominated.  With a median real terminal
+wealth of \$102{,}523 and zero probability of reaching the goal, a pure-cash strategy
+is not conservative---it guarantees failure.  Inflation silently erodes real purchasing
+power over ten years.
+
+\paragraph{All-equity (Strategy 2)} achieves the highest median (\$168{,}672) and
+a goal probability of 64.3\%, but its 5th-percentile floor of \$91{,}085 represents
+the worst tail outcome of all equity-containing strategies.  An investor who happened
+to retire into a prolonged bear market (like the 2000--2009 ``lost decade'') would
+finish \$59{,}000 below the goal.
+
+\paragraph{The classic 60/40 portfolio (Strategy 3)} delivers a disappointing 40.3\%
+goal probability.  The culprit is AGG: after incorporating the 2022 rate-shock
+episode---the worst annual drawdown for investment-grade bonds in modern history---
+bond returns in the 2005--2025 sample ($\approx3\%$/yr) are insufficient to compensate
+for the opportunity cost of displacing equities.
+
+\paragraph{The recommended strategy (Strategy 5)} effectively matches all-equity's
+upside (61.6\% vs.\ 64.3\% goal probability) while providing a 5th-percentile floor
+\$31{,}675 higher than the all-equity alternative (\$122{,}760 vs.\ \$91{,}085).
+This is the practical manifestation of mean-variance efficiency: the same expected
+outcome at materially lower downside risk.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{goal_attainment_bar.png}
+  \caption{Goal attainment probability (\%) by strategy.
+    The recommended strategy (Strategy 5, \textbf{61.6\%}) matches the all-equity
+    benchmark while offering a substantially higher tail-risk floor.}
+  \label{fig:bar}
+\end{figure}
+
+% ============================================================
+\section{Risk Management and Stress Testing}
+\label{sec:risk}
+% ============================================================
+
+\subsection{Drawdown Analysis During the Accumulation Phase}
+
+A common misconception in retirement/goal-based planning is that drawdown risk
+during the accumulation phase mirrors that of a fixed portfolio held to maturity.
+In fact, because the client contributes positive savings at the start of every
+year, the portfolio rarely exhibits a nominal decline even through bear markets:
+fresh contributions replenish market-driven losses.
+
+\begin{table}[H]
+  \centering
+  \caption{Maximum drawdown statistics over 5{,}000 simulated paths --- recommended strategy}
+  \label{tab:drawdown}
+  \begin{tabular}{lr}
+    \toprule
+    \textbf{Statistic} & \textbf{Value} \\
+    \midrule
+    Median maximum drawdown               & 0.0\%   \\
+    5th-percentile maximum drawdown       & $-0.6\%$ \\
+    Fraction of paths breaching $-20\%$   & $<1\%$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The implication is that the relevant risk metric for the client is not drawdown
+per se but \textit{shortfall probability}---the probability that terminal real
+wealth falls below \$150{,}000---which is captured by the goal-attainment statistics
+in Section~\ref{sec:simulation}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\linewidth]{drawdown_distribution.png}
+  \caption{Distribution of maximum drawdown across 5{,}000 simulation paths.
+    The vast majority of paths exhibit zero nominal drawdown, reflecting the
+    mechanically stabilizing effect of annual savings contributions.}
+  \label{fig:dd}
+\end{figure}
+
+\subsection{Stress Scenarios}
+
+Three adverse shocks are injected into the base simulation to identify conditions
+under which the plan breaks down most severely.
+
+\begin{table}[H]
+  \centering
+  \caption{Stress test results --- recommended strategy (60\% IVV / 13\% USMV / 27\% SHV)}
+  \label{tab:stress}
+  \begin{tabular}{lrrrr}
+    \toprule
+    \textbf{Scenario} & \textbf{P(Goal) \%} & \textbf{Median (\$)} & \textbf{5th Pct (\$)} \\
+    \midrule
+    Base case                  & 61.6\% & 157{,}068 & 122{,}760 \\
+    Market crash at Year 3     & 37.3\% & 143{,}054 & 112{,}628 \\
+    Job loss at Year 3         &  2.2\% & 114{,}819 &  92{,}203 \\
+    High inflation (4.5\%/yr)  & 16.9\% & 129{,}468 & 101{,}189 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Market crash at Year 3.}
+Equity monthly returns are forced to $-3.8\%$/month for 12 months,
+producing an approximate $-35\%$ annual equity return.  Goal probability falls
+from 61.6\% to 37.3\%.  Critically, this scenario assumes the client
+\textit{does not sell} following the crash.  With seven years remaining, the
+portfolio retains the capacity for recovery.  The 27\% SHV buffer provides
+both behavioral support (reducing the magnitude of the paper loss) and a
+rebalancing source (the client mechanically buys equities at depressed prices).
+
+\paragraph{Job loss at Year 3.}
+Zero new contributions for one year, combined with a forced liquidation of the
+emergency fund (\$21{,}000) from the portfolio to cover living expenses.
+This is the most damaging scenario (P(Goal) = 2.2\%).
+The dual hit---no new capital entering the portfolio and forced asset liquidation
+---creates a permanent path divergence that seven years of subsequent returns
+cannot fully overcome.  This scenario is primarily a \textit{human capital} risk,
+not a financial markets risk.
+
+\paragraph{High inflation (4.5\%).}
+Deflating all wealth paths at 4.5\% instead of 2.5\% re-prices the goal in
+nominal terms: reaching \$150{,}000 real now requires approximately \$229{,}000
+nominal at Year 10 versus \$192{,}000 at the base inflation rate.
+Goal probability drops to 16.9\%.
+
+\paragraph{Mitigation strategies.}
+\begin{itemize}
+  \item \textit{Crash risk:} Maintain the SHV buffer; rebalance mechanically;
+        avoid behavioral selling during drawdowns.
+  \item \textit{Job-loss risk:} Accumulate 9--12 months of expenses in liquid
+        assets before increasing equity exposure; consider income-protection insurance.
+  \item \textit{Inflation risk:} If core CPI systematically exceeds 3\%, add
+        I-bonds (up to \$10{,}000/year) or a TIPS fund to the portfolio.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.80\linewidth]{stress_scenario_bar.png}
+  \caption{Goal attainment probability under the base case and three stress scenarios.
+    Job loss is uniquely destructive because it simultaneously stops contributions
+    and forces asset liquidation.}
+  \label{fig:stress}
+\end{figure}
+
+% ============================================================
+\section{Factor Attribution Analysis}
+\label{sec:factors}
+% ============================================================
+
+\subsection{CAPM Regressions}
+\label{sec:capm}
+
+To assess whether any asset earns return in excess of its market-beta compensation,
+we estimate the CAPM for AGG, QUAL, and USMV using IVV as the market proxy and
+SHV as the risk-free rate (January 2013 -- December 2025, $T=145$ months):
+
+\begin{equation}
+  r_{i,t} - r_{f,t} = \alpha_i + \beta_i\,(r_{\text{IVV},t} - r_{f,t}) + \varepsilon_{i,t}
+  \label{eq:capm}
+\end{equation}
+
+\begin{table}[H]
+  \centering
+  \caption{CAPM regression results (IVV = market proxy; SHV = risk-free)}
+  \label{tab:capm}
+  \begin{tabular}{lrrrrr}
+    \toprule
+    \textbf{Asset} & \textbf{$\hat{\alpha}$ (ann.)} & \textbf{$\hat{\beta}$}
+                   & \textbf{$R^2$} & \textbf{$t(\hat{\alpha})$} & \textbf{$p(\hat{\alpha})$} \\
+    \midrule
+    AGG  & $-0.88\%$ & 0.116 & 0.128 & $-0.69$ & 0.49 \\
+    QUAL & $-0.46\%$ & 1.005 & 0.969 & $-0.60$ & 0.55 \\
+    \textbf{USMV} & $+0.31\%$ & \textbf{0.719} & 0.780 & $+0.20$ & 0.84 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+No asset generates statistically significant alpha at conventional significance
+levels.  This finding is consistent with the Efficient Markets Hypothesis in its
+semi-strong form \citep{fama1970}: passive ETF returns are well-explained by
+systematic risk exposures.
+
+The most informative parameter is USMV's $\hat{\beta} = 0.72$.  Holding USMV
+provides approximately 72 cents of equity market exposure per dollar invested,
+making it a cost-effective way to reduce portfolio beta while maintaining equity-like
+expected returns.  QUAL's $\hat{\beta} \approx 1.0$ confirms its redundancy relative
+to IVV.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\linewidth]{capm_alpha_bar.png}
+  \caption{Annualized CAPM alpha (with 95\% confidence interval) for AGG, QUAL, and USMV.
+    No asset shows alpha statistically distinguishable from zero.}
+  \label{fig:alpha}
+\end{figure}
+
+\subsection{Fama-French Five-Factor Decomposition}
+\label{sec:ff5}
+
+To characterize the portfolio's systematic return sources beyond the single-factor
+CAPM, we estimate the \citet{fama2015} five-factor model for the recommended portfolio:
+
+\begin{equation}
+  r_{p,t} - r_{f,t} = \alpha + \beta_1\,\text{Mkt-RF}_t
+                               + \beta_2\,\text{SMB}_t
+                               + \beta_3\,\text{HML}_t
+                               + \beta_4\,\text{RMW}_t
+                               + \beta_5\,\text{CMA}_t
+                               + \varepsilon_t
+  \label{eq:ff5}
+\end{equation}
+
+Monthly factor data are sourced from the Kenneth French Data Library.
+
+\begin{table}[H]
+  \centering
+  \caption{Fama-French five-factor regression --- recommended portfolio
+           (60.4\% IVV / 12.6\% USMV / 27.0\% SHV)}
+  \label{tab:ff5}
+  \begin{tabular}{lrrrp{5.5cm}}
+    \toprule
+    \textbf{Factor} & \textbf{Loading} & \textbf{$t$-stat} & \textbf{$p$-value}
+                    & \textbf{Interpretation} \\
+    \midrule
+    $\hat{\alpha}$ & $-0.12\%$/yr & $-0.39$ & 0.698 & No unexplained return \\
+    Mkt-RF         &  0.684       & 113.5   & 0.000 & 68\% market beta; expected from CAL \\
+    SMB            & $-0.080$     & $-7.74$ & 0.000 & Large-cap tilt (IVV + USMV) \\
+    HML            & $+0.003$     &  0.27   & 0.789 & No value exposure \\
+    \textbf{RMW}   & \textbf{$+0.075$} & \textbf{5.76} & \textbf{0.000} & Profitability tilt from USMV \\
+    \textbf{CMA}   & \textbf{$+0.042$} & \textbf{2.95} & \textbf{0.004} & Conservative investment tilt from USMV \\
+    \midrule
+    $R^2$          & 0.990        &         &       & 99\% of variance explained \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three findings emerge:
+
+\textit{First}, the portfolio carries \textbf{no alpha} ($\hat{\alpha} = -0.12\%$/yr, $p=0.70$).
+The client is being compensated for systematic factor exposures---not for active management.
+This is appropriate given the passive ETF mandate.
+
+\textit{Second}, statistically significant positive loadings on \textbf{RMW} (profitability)
+and \textbf{CMA} (conservative investment) arise from USMV's inclusion.
+Minimum-volatility stocks are disproportionately high-quality, profitable companies
+that invest conservatively---characteristics the FF5 model prices as compensated risk factors.
+These loadings explain why USMV adds expected return in excess of its market beta.
+
+\textit{Third}, the negative SMB loading ($\hat{\beta}_2 = -0.08$) confirms the
+large-cap orientation of the portfolio (both IVV and USMV weight large-cap companies).
+An $R^2$ of 0.990 implies that the five-factor model accounts for essentially all variation
+in portfolio returns---providing exceptional transparency into what the client owns and why.
+
+% ============================================================
+\section{Sensitivity and Robustness Analysis}
+\label{sec:sensitivity}
+% ============================================================
+
+\subsection{Estimation-Window Dependence}
+
+A central concern in applied mean-variance optimization is that tangency weights
+are sensitive to estimated expected returns, which vary substantially across sample
+periods \citep{michaud1989}.  We re-estimate the Layer B tangency portfolio over
+four sub-periods:
+
+\begin{table}[H]
+  \centering
+  \caption{Tangency portfolio weights and simulation outcomes by estimation window
+           (simulation uses full-sample 2005--2025 return distribution in all cases)}
+  \label{tab:sensitivity}
+  \small
+  \begin{tabular}{lrrrrrrr}
+    \toprule
+    \textbf{Window} & \textbf{IVV} & \textbf{AGG} & \textbf{SHV} & \textbf{QUAL}
+                    & \textbf{USMV} & \textbf{P(Goal)\%} & \textbf{Median (\$)} \\
+    \midrule
+    Full (2005--2025)      & 83\% &  0\% &  0\% & 0\% & 17\% & 82.1\% & 182{,}261 \\
+    Post-GFC (2010--2025)  & 83\% &  0\% &  0\% & 0\% & 17\% & 82.1\% & 182{,}261 \\
+    Recent (2015--2025)    &100\% &  0\% &  0\% & 0\% &  0\% & 82.3\% & 185{,}772 \\
+    Pre-crisis (2005--2015)&  0\% & 18\% & 76\% & 4\% &  2\% &  0.0\% & 108{,}009 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Key findings.}
+The full-sample and post-GFC windows produce identical weights (83\% IVV / 17\% USMV),
+confirming that the 2008 Global Financial Crisis, while severe, does not distort
+long-run estimated moments enough to change the optimal allocation.
+
+The recent-only window (2015--2025) selects 100\% IVV.  During this eleven-year
+bull market no diversifier raised the Sharpe ratio, so the optimizer concentrated
+entirely in equities.  This illustrates the canonical overfitting risk in
+short-window optimization: a portfolio calibrated to a bull market will be too
+aggressive when that regime ends.
+
+The pre-crisis window (2005--2015) produces the most striking result: the optimizer
+allocates 76\% to SHV and 18\% to AGG.  The 2008 crisis dominated variance estimates
+in that period, inflating bond returns relative to equities and producing extreme
+defensive positioning.  When these weights are applied to the full 2005--2025 returns,
+goal attainment probability collapses to \textbf{0\%}---the portfolio entirely misses
+the equity bull run required to close the savings gap.
+
+\paragraph{Conclusion.}
+The full-sample window (2005--2025) is the most defensible estimation choice.
+It spans two complete market cycles, providing realistic cross-regime variance
+and return estimates without overfitting to either the GFC or the post-2015 bull market.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.78\linewidth]{sensitivity_weights.png}
+  \caption{Tangency portfolio weights by estimation window.
+    The full-sample and post-GFC windows agree exactly; the pre-crisis window
+    selects an almost entirely defensive allocation that fails in forward simulation.}
+  \label{fig:sensitivity}
+\end{figure}
+
+% ============================================================
+\section{Conclusion and Investment Recommendations}
+\label{sec:conclusion}
+% ============================================================
+
+\subsection{Summary of Findings}
+
+This analysis delivers a complete, implementable savings and investment plan
+for a 22-year-old college graduate targeting a \$150{,}000 real home down payment
+in ten years.  The central findings are:
+
+\begin{enumerate}
+  \item \textbf{Investing is necessary.} Raw savings contributions (\$123{,}359 over
+    ten years) fall short of the inflation-adjusted goal.  Investment returns of
+    approximately 2--3\% annually above contributions are required.
+  \item \textbf{The optimal allocation is 60\% IVV / 13\% USMV / 27\% SHV.}
+    This portfolio maximizes the Sharpe ratio within the five-asset universe,
+    then positions the client on the Capital Allocation Line to match a stated
+    20\% maximum drawdown tolerance.
+  \item \textbf{Goal attainment probability is 61.6\%.} The median terminal real
+    wealth (\$157{,}068) exceeds the goal; the 5th-percentile floor (\$122{,}760)
+    provides a meaningful buffer above subsistence.
+  \item \textbf{The strategy dominates alternatives on a risk-adjusted basis.}
+    It matches all-equity's goal probability while offering a \$31{,}675 higher
+    tail-risk floor, and substantially outperforms the 60/40 benchmark in this sample.
+  \item \textbf{Job loss is the dominant risk.}  A one-year income interruption in
+    Year 3 reduces goal probability to 2.2\%---far more damaging than a market crash
+    (37.3\%) or sustained high inflation (16.9\%).  This underscores the importance
+    of income protection and a robust emergency fund before committing aggressively
+    to the investment plan.
+  \item \textbf{The portfolio is factor-transparent.} Fama-French five-factor analysis
+    (R$^2 = 0.99$) shows that returns are fully explained by systematic risk premia,
+    with economically meaningful profitability and conservative-investment tilts
+    attributable to USMV.  There is no unexplained alpha---nor should there be from
+    passive ETFs.
+\end{enumerate}
+
+\subsection{Caveats and Limitations}
+
+\begin{table}[H]
+  \centering
+  \caption{Material caveats and their implications}
+  \label{tab:caveats}
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    \textbf{Caveat} & \textbf{Implication} \\
+    \midrule
+    Historical returns $\neq$ future returns &
+      2005--2025 includes an unusually strong U.S.\ equity bull market.
+      P(Goal) estimates are illustrative, not forecasts. \\[4pt]
+    Estimation error in tangency weights &
+      Mean-variance optimization is notoriously sensitive to expected-return inputs
+      \citep{michaud1989}.  The IVV-heavy result partly reflects a decade of
+      high equity returns. \\[4pt]
+    USMV alpha not guaranteed &
+      The historical positive CAPM alpha (+0.31\%/yr) is statistically
+      insignificant and may be arbitraged away as factor investing becomes mainstream. \\[4pt]
+    No tax-advantaged account modelling &
+      In practice, maximizing Roth IRA / 401(k) contributions before taxable
+      investing meaningfully improves all P(Goal) estimates and is the highest-priority
+      practical action. \\[4pt]
+    Behavioral risk unmodelled &
+      The crash scenario (P(Goal) = 37.3\%) assumes the client holds through the
+      drawdown.  Selling at the trough eliminates the recovery and permanently
+      destroys the simulation's implied return path. \\[4pt]
+    Loan payoff alternative not evaluated &
+      At 5.5\%, the student loan represents a guaranteed, risk-free return equivalent.
+      Accelerated repayment may dominate equity investment in low-return environments. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Actionable Recommendations}
+
+\begin{enumerate}
+  \item \textbf{Open a Roth IRA immediately.}  At age 22, with income in the 20\%
+    effective bracket, the Roth structure (post-tax contributions; tax-free gains)
+    is almost certainly optimal over the traditional IRA.  The 2026 contribution limit
+    is \$7{,}000; this alone removes capital-gains drag from the majority of the
+    recommended strategy.
+  \item \textbf{Automate contributions.}  Schedule automatic transfers on payroll
+    dates.  The simulation assumes complete contributions every year; any lapse,
+    particularly in early years when compounding runway is longest, disproportionately
+    reduces terminal wealth.
+  \item \textbf{Rebalance annually, mechanically.}  Rebalancing is not just a risk
+    management tool; it is a momentum-contrarian device that systematically buys
+    assets after they have underperformed and sells them after outperformance.
+    The discipline matters most after crashes.
+  \item \textbf{Initiate a glide path in Year 7.}  As the 2035 goal date approaches,
+    gradually reduce IVV weight toward USMV and SHV on a fixed schedule (e.g., reduce
+    IVV by 5 percentage points per year, adding equally to SHV).  This reduces
+    left-tail risk in the final years when the portfolio is largest and recovery time
+    is shortest.
+  \item \textbf{Review the plan at the Year 5 midpoint.}  If actual portfolio value
+    diverges substantially from the median simulation path (either above or below
+    \$75{,}000--\$80{,}000 real), revise either the target allocation or the goal date
+    rather than increasing risk to compensate for underperformance.
+\end{enumerate}
+
+% ============================================================
+%  References
+% ============================================================
+\newpage
+\begin{thebibliography}{99}
+
+\bibitem[Ang(2014)]{ang2016}
+Ang, A. (2014).
+\textit{Asset Management: A Systematic Approach to Factor Investing}.
+Oxford University Press.
+
+\bibitem[Baker, Bradley, and Wurgler(2011)]{baker2011}
+Baker, M., Bradley, B., and Wurgler, J. (2011).
+Benchmarks as limits to arbitrage: Understanding the low-volatility anomaly.
+\textit{Financial Analysts Journal}, 67(1), 40--54.
+
+\bibitem[Fama(1970)]{fama1970}
+Fama, E.~F. (1970).
+Efficient capital markets: A review of theory and empirical work.
+\textit{Journal of Finance}, 25(2), 383--417.
+
+\bibitem[Fama and French(1993)]{fama1993}
+Fama, E.~F. and French, K.~R. (1993).
+Common risk factors in the returns on stocks and bonds.
+\textit{Journal of Financial Economics}, 33(1), 3--56.
+
+\bibitem[Fama and French(2015)]{fama2015}
+Fama, E.~F. and French, K.~R. (2015).
+A five-factor asset pricing model.
+\textit{Journal of Financial Economics}, 116(1), 1--22.
+
+\bibitem[Magdon-Ismail and Atiya(2004)]{magdon2004}
+Magdon-Ismail, M. and Atiya, A.~F. (2004).
+Maximum drawdown.
+\textit{Risk Magazine}, 17(10), 99--102.
+
+\bibitem[Markowitz(1952)]{markowitz1952}
+Markowitz, H. (1952).
+Portfolio selection.
+\textit{Journal of Finance}, 7(1), 77--91.
+
+\bibitem[Michaud(1989)]{michaud1989}
+Michaud, R.~O. (1989).
+The Markowitz optimization enigma: Is `optimized' optimal?
+\textit{Financial Analysts Journal}, 45(1), 31--42.
+
+\bibitem[Novy-Marx(2013)]{novy2013}
+Novy-Marx, R. (2013).
+The other side of value: The gross profitability premium.
+\textit{Journal of Financial Economics}, 108(1), 1--28.
+
+\bibitem[Politis and Romano(1994)]{politis1994}
+Politis, D.~N. and Romano, J.~P. (1994).
+The stationary bootstrap.
+\textit{Journal of the American Statistical Association}, 89(428), 1303--1313.
+
+\bibitem[Tobin(1958)]{tobin1958}
+Tobin, J. (1958).
+Liquidity preference as behavior towards risk.
+\textit{Review of Economic Studies}, 25(2), 65--86.
+
+\end{thebibliography}
+
+% ============================================================
+%  Appendix
+% ============================================================
+\newpage
+\appendix
+\section{Complete Figure Reference}
+\label{app:figures}
+
+\begin{table}[H]
+  \centering
+  \caption{All figures generated by the analysis}
+  \label{tab:figs}
+  \begin{tabularx}{\linewidth}{lXl}
+    \toprule
+    \textbf{File Name} & \textbf{Description} & \textbf{Section} \\
+    \midrule
+    \texttt{savings\_trajectory.png} & Annual and cumulative savings vs.\ goal & \S\ref{sec:savings} \\
+    \texttt{correlation\_heatmap\_Layer\_A\ldots} & Layer A return correlations & \S\ref{sec:universe} \\
+    \texttt{correlation\_heatmap\_Layer\_B\ldots} & Layer B return correlations & \S\ref{sec:universe} \\
+    \texttt{efficient\_frontier\_Layer\_A\ldots} & Layer A efficient frontier + CAL & \S\ref{sec:optimization} \\
+    \texttt{efficient\_frontier\_Layer\_B\ldots} & Layer B efficient frontier + CAL & \S\ref{sec:optimization} \\
+    \texttt{wealth\_fan\_chart\_Layer\_B\ldots}  & 5{,}000-path wealth fan chart & \S\ref{sec:simulation} \\
+    \texttt{terminal\_hist\_Layer\_B\ldots}      & Terminal real wealth histogram & \S\ref{sec:simulation} \\
+    \texttt{strategy\_fan\_overlay.png}          & Fan charts for all five strategies & \S\ref{sec:comparison} \\
+    \texttt{goal\_attainment\_bar.png}           & Goal attainment bar chart & \S\ref{sec:comparison} \\
+    \texttt{drawdown\_distribution.png}          & Maximum drawdown histogram & \S\ref{sec:risk} \\
+    \texttt{stress\_scenario\_bar.png}           & Stress scenario goal probabilities & \S\ref{sec:risk} \\
+    \texttt{capm\_alpha\_bar.png}                & CAPM alpha with confidence intervals & \S\ref{sec:capm} \\
+    \texttt{sensitivity\_weights.png}            & Tangency weights by estimation window & \S\ref{sec:sensitivity} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Data and Code Reference}
+\label{app:code}
+
+\begin{table}[H]
+  \centering
+  \caption{Data files produced by the analysis}
+  \label{tab:data}
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    \textbf{File} & \textbf{Contents} \\
+    \midrule
+    \texttt{data/returns.csv}               & 251 months of adjusted ETF total returns \\
+    \texttt{data/client\_cashflows.csv}     & Year-by-year income, tax, expense, loan, savings \\
+    \texttt{analysis/strategy\_comparison.csv} & Full 5-strategy simulation results \\
+    \texttt{analysis/stress\_results.csv}  & Stress scenario terminal wealth statistics \\
+    \texttt{analysis/capm\_results.csv}    & CAPM regression coefficients per asset \\
+    \texttt{analysis/ff5\_results.csv}     & FF5 factor loadings for recommended portfolio \\
+    \texttt{analysis/sensitivity\_results.csv} & Tangency weights by estimation window \\
+    \texttt{analysis/sensitivity\_sim\_results.csv} & Simulation outcomes by window \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Python module reference}
+  \label{tab:code}
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    \textbf{Module} & \textbf{Purpose} \\
+    \midrule
+    \texttt{config.py}                      & Single source of truth for all model parameters \\
+    \texttt{data/client\_profile.py}        & Deterministic income and savings projection \\
+    \texttt{data/pull\_returns.py}          & Yahoo Finance data download and cleaning \\
+    \texttt{models/portfolio\_stats.py}     & Return statistics and covariance matrix estimation \\
+    \texttt{models/efficient\_frontier.py} & Tangency optimization (SLSQP) and CAL construction \\
+    \texttt{models/simulation.py}           & Block-bootstrap Monte Carlo wealth simulation engine \\
+    \texttt{analysis/compare\_strategies.py}& Five-strategy side-by-side comparison \\
+    \texttt{analysis/risk\_analysis.py}     & Drawdown analysis and stress-test scenarios \\
+    \texttt{analysis/factor\_alpha.py}      & CAPM and Fama-French five-factor regressions \\
+    \texttt{analysis/sensitivity.py}        & Estimation-window robustness checks \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Model Parameter Summary}
+\label{app:params}
+
+\begin{table}[H]
+  \centering
+  \caption{Complete list of model parameters (\texttt{config.py})}
+  \label{tab:params}
+  \begin{tabular}{llp{6.2cm}}
+    \toprule
+    \textbf{Parameter} & \textbf{Value} & \textbf{Description} \\
+    \midrule
+    \texttt{START\_YEAR}              & 2026       & Plan start year \\
+    \texttt{START\_SALARY}            & \$65{,}000 & First-year gross salary \\
+    \texttt{SALARY\_GROWTH}           & [5\%]$\times$4 + [3\%]$\times$6 & Annual nominal wage growth \\
+    \texttt{EFFECTIVE\_TAX\_RATE}     & 20\%       & Federal + state effective rate \\
+    \texttt{MONTHLY\_EXPENSES}        & \$3{,}500  & Year-1 living expenses \\
+    \texttt{INFLATION\_RATE}          & 2.5\%      & Annual CPI baseline \\
+    \texttt{LOAN\_BALANCE}            & \$30{,}000 & Student loan principal \\
+    \texttt{LOAN\_RATE}               & 5.5\%      & Federal direct loan rate \\
+    \texttt{LOAN\_TERM\_YEARS}        & 10         & Standard repayment term \\
+    \texttt{SAVINGS\_GOAL\_REAL}      & \$150{,}000 & Real goal in 2026 dollars \\
+    \texttt{PLAN\_YEARS}              & 10         & Investment horizon \\
+    \texttt{N\_SIMULATIONS}           & 5{,}000    & Monte Carlo paths \\
+    \texttt{BLOCK\_SIZE\_MONTHS}      & 12         & Block-bootstrap block length \\
+    \texttt{RANDOM\_SEED}             & 42         & Reproducibility seed \\
+    \texttt{MAX\_DRAWDOWN\_TOLERANCE} & 20\%       & Client risk tolerance \\
+    \texttt{EMERGENCY\_FUND\_MONTHS}  & 6          & Emergency cash buffer \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{document}
