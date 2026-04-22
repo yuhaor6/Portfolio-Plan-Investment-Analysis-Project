@@ -1,6 +1,5 @@
 # Executive Summary
 ## 10-Year Savings & Investment Plan for a New College Graduate
-**Prepared for:** Burton Hollifield, Tepper School of Business, CMU — Spring 2026  
 **Date:** April 7, 2026
 
 ---
