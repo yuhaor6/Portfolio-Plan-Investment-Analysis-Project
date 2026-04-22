@@ -1,6 +1,6 @@
 # Investment Analysis — Final Report
 ## 10-Year Savings & Investment Plan for a New College Graduate
-**Course:** 45-912 Investments, Burton Hollifield, Tepper School of Business, CMU  
+**Course:** 70492 Investments Analysis, Burton Hollifield, Tepper School of Business, CMU  
 **Date:** April 7, 2026
 
 ---
