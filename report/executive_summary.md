@@ -52,10 +52,4 @@ The recommended strategy nearly matches All Equity's goal probability while **ra
 
 ---
 
-## One-Line Takeaway
-
-Own the market efficiently, tilt toward low-volatility to soften the left tail, keep a liquid buffer— and save consistently for 10 years. Everything else is noise.
-
----
-
 *Full quantitative analysis: `report/final_report.md`*
